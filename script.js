@@ -325,3 +325,26 @@ if (vKeyboard) {
     }
   });
 }
+
+
+
+// === HƯỚNG DẪN NHẬP TIẾNG HÀN ===
+const guideBtn = document.getElementById("guideBtn");
+const guideModal = document.getElementById("guideModal");
+const closeGuide = document.getElementById("closeGuide");
+
+if (guideBtn && guideModal && closeGuide) {
+  guideBtn.addEventListener("click", () => {
+    guideModal.style.display = "block";
+  });
+
+  closeGuide.addEventListener("click", () => {
+    guideModal.style.display = "none";
+  });
+
+  window.addEventListener("click", (e) => {
+    if (e.target === guideModal) {
+      guideModal.style.display = "none";
+    }
+  });
+}
