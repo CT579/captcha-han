@@ -1,0 +1,186 @@
+:root{
+  --bg1:#e6f3ff;
+  --bg2:#eef6ff;
+  --accent:#3f6bff;
+  --accent-2:#6db8ff;
+  --card:#ffffff;
+  --muted:#6b7280;
+  --success:#16a34a;
+  --danger:#ef4444;
+}
+
+/* Reset + layout */
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{
+  font-family: "Inter", "Poppins", system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+  background: linear-gradient(135deg,var(--bg1),var(--bg2));
+  display:flex;align-items:center;justify-content:center;padding:20px;
+  color:#0b1736;
+}
+
+/* screens */
+.screen{display:none; width:100%; max-width:520px}
+.screen.active{display:block}
+.card{
+  background:var(--card);
+  border-radius:16px;
+  padding:22px;
+  box-shadow:0 10px 30px rgba(18,36,80,0.08);
+  text-align:center;
+}
+.top-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+
+/* home */
+h1{font-size:24px;margin:6px 0 18px}
+.home-buttons{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
+
+/* buttons */
+.btn{
+  border:0;padding:10px 16px;border-radius:10px;background:linear-gradient(180deg,var(--accent),#2f54ff);
+  color:white;font-weight:600;cursor:pointer;box-shadow:0 8px 18px rgba(63,107,255,0.12);
+}
+.btn.small{padding:8px 10px;font-size:14px}
+.btn.large{padding:14px 20px;font-size:16px}
+.btn.secondary{
+  background:transparent;color:#1f2b49;border:1px solid rgba(31,43,73,0.06);box-shadow:none;
+}
+.btn:active{transform:translateY(2px)}
+
+/* timer */
+.timer{
+  background:linear-gradient(180deg,var(--accent),var(--accent-2));
+  color:white;padding:8px 14px;border-radius:999px;font-weight:700;
+  box-shadow:0 6px 18px rgba(63,107,255,0.12);
+}
+
+/* CAPTCHA styles */
+.captcha-box{
+  font-size:36px;font-weight:700;letter-spacing:10px;padding:14px 18px;border-radius:12px;
+  background:#fbfdff;margin:8px 0;min-height:64px;display:flex;align-items:center;justify-content:center;
+}
+.captcha-input{
+  width:100%;font-size:28px;padding:12px;border-radius:10px;border:2px solid #e6eefc;margin-top:12px;
+  text-align:center; outline:none;background:#fbfbff;
+}
+.captcha-input:focus{border-color:var(--accent)}
+
+/* muted text */
+.muted{color:var(--muted);font-size:14px;margin-top:8px}
+
+/* QUIZ */
+.quiz-card{padding:18px}
+.quiz-head{display:flex;justify-content:space-between;align-items:center}
+.quiz-question{font-size:44px;letter-spacing:6px}
+
+/* options 2x2 */
+.options-grid{
+  margin-top:14px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+  justify-items:stretch;
+}
+.option-btn{
+  display:flex;align-items:center;justify-content:flex-start;gap:10px;
+  padding:12px 14px;border-radius:10px;background:#fff;border:2px solid transparent;cursor:pointer;
+  font-weight:700;font-size:16px;color:#0b1736;
+  transition:transform .12s ease, box-shadow .12s ease, background .12s ease;
+}
+.option-btn:hover{transform:translateY(-4px);box-shadow:0 8px 20px rgba(13,38,95,0.06)}
+.option-label{width:36px;height:36px;border-radius:8px;background:#f1f5ff;color:var(--accent);display:flex;align-items:center;justify-content:center;font-weight:800}
+.option-text{flex:1;text-align:left}
+
+/* selected / result states */
+.option-btn.selected{border-color:rgba(63,107,255,0.18);background:#eef4ff}
+.option-btn.correct{background:linear-gradient(180deg,#daf7dd,#c8f0cc);border-color:rgba(22,163,74,0.18);color:var(--success)}
+.option-btn.incorrect{background:linear-gradient(180deg,#ffe6e6,#ffd9d9);border-color:rgba(239,68,68,0.18);color:var(--danger)}
+.option-btn.unanswered{opacity:0.6}
+
+/* controls / summary */
+.quiz-controls{display:flex;gap:10px;justify-content:center;margin-top:16px}
+.quiz-summary{margin-top:14px;text-align:left}
+
+/* modal */
+.modal{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(6,18,48,0.45)}
+.modal.hidden{display:none}
+.modal-card{background:var(--card);padding:18px;border-radius:12px;min-width:280px;text-align:center;box-shadow:0 12px 36px rgba(8,20,45,0.18)}
+.modal-actions{display:flex;gap:8px;justify-content:center;margin-top:12px}
+
+/* fade animation for option area */
+.fade{transition:opacity .22s ease, transform .22s ease}
+.fade.hidden{opacity:0;transform:translateY(6px)}
+
+
+/* --- Responsive cho điện thoại --- */
+@media (max-width: 600px) {
+  body {
+    padding: 10px;
+  }
+
+  .screen {
+    max-width: 100%;
+  }
+
+  h1 {
+    font-size: 20px;
+  }
+
+  .captcha-box {
+    font-size: 28px;
+    letter-spacing: 6px;
+    padding: 10px;
+    min-height: 56px;
+  }
+
+  .captcha-input {
+    font-size: 22px;
+    padding: 10px;
+  }
+
+  .btn.large {
+    font-size: 15px;
+    padding: 12px 16px;
+  }
+
+  .btn.small {
+    font-size: 13px;
+    padding: 8px 12px;
+  }
+
+  .option-btn {
+    font-size: 15px;
+    padding: 10px 12px;
+    gap: 8px;
+  }
+
+  .option-label {
+    width: 30px;
+    height: 30px;
+    font-size: 14px;
+  }
+
+  .quiz-question {
+    font-size: 36px;
+    letter-spacing: 4px;
+  }
+
+  .card {
+    padding: 16px;
+  }
+
+  .timer {
+    padding: 6px 12px;
+    font-size: 14px;
+  }
+
+  /* Giảm khoảng cách nút */
+  .quiz-controls {
+    gap: 6px;
+  }
+
+  /* Tránh bị tràn khi xoay ngang */
+  main#app {
+    width: 100%;
+  }
+}

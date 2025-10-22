@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Luyện Captcha & Trắc nghiệm Tiếng Hàn</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main id="app">
+
+    <!-- HOME -->
+    <section id="home-screen" class="screen active">
+      <h1>🧠 Luyện Captcha Tiếng Hàn 🇰🇷</h1>
+      <div class="home-buttons">
+        <button id="start-btn" class="btn large">Bắt đầu Captcha</button>
+        <button id="quiz-btn" class="btn large">Trắc nghiệm</button>
+      </div>
+    </section>
+
+    <!-- CAPTCHA -->
+    <section id="captcha-screen" class="screen">
+      <div class="top-row">
+        <div id="timer" class="timer">60</div>
+        <button id="exit-btn" class="btn small secondary">Thoát</button>
+      </div>
+
+      <div class="card">
+        <div id="captcha" class="captcha-box">────</div>
+
+        <input id="captcha-input" class="captcha-input" type="text" maxlength="4"
+               placeholder="Gõ để nhập - bàn phím sẽ chuyển sang Hàn" autocomplete="off" />
+
+        <p id="status" class="muted"></p>
+      </div>
+    </section>
+
+    <!-- CAPTCHA RESULT -->
+    <section id="result-screen" class="screen">
+      <div class="card result-card">
+        <h2 id="result-message">Kết quả</h2>
+        <div class="result-actions">
+          <button id="retry-btn" class="btn">Chơi lại</button>
+          <button id="home-btn" class="btn secondary">Về trang chủ</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- QUIZ -->
+    <section id="quiz-screen" class="screen">
+      <div class="top-row">
+        <div id="quiz-timer" class="timer">120</div>
+        <button id="quiz-exit-btn" class="btn small secondary">Thoát</button>
+      </div>
+
+      <div class="card quiz-card">
+        <div class="quiz-head">
+          <h2>Câu <span id="current-question">1</span> / 15</h2>
+          <div id="summary-top" class="summary-top muted"></div>
+        </div>
+
+        <div id="quiz-question" class="captcha-box quiz-question">가</div>
+
+        <div id="quiz-options" class="options-grid fade"></div>
+
+        <div class="quiz-controls">
+          <button id="prev-btn" class="btn small">⬅️ Trước</button>
+          <button id="submit-quiz-btn" class="btn">📝 Nộp bài</button>
+          <button id="next-btn" class="btn small">Tiếp ➡️</button>
+        </div>
+
+        <div id="quiz-summary" class="quiz-summary"></div>
+      </div>
+    </section>
+
+    <!-- CONFIRM MODAL -->
+    <div id="confirm-modal" class="modal hidden">
+      <div class="modal-card">
+        <p id="confirm-text">Bạn có chắc muốn nộp bài không?</p>
+        <div class="modal-actions">
+          <button id="confirm-no" class="btn secondary">Không</button>
+          <button id="confirm-yes" class="btn">Nộp</button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
