@@ -291,3 +291,37 @@ document.addEventListener('keydown', (e)=>{
     }
   }
 });
+
+
+// ---- Virtual Keyboard for mobile ----
+const vKeyboard = document.getElementById('virtual-keyboard');
+if (vKeyboard) {
+  vKeyboard.addEventListener('click', (e) => {
+    if (!e.target.matches('button')) return;
+    const key = e.target.dataset.key.toLowerCase();
+
+    if (key === 'backspace') {
+      currentInput = currentInput.slice(0, -1);
+      captchaInput.value = currentInput;
+      return;
+    }
+    if (key === 'enter') {
+      if (currentInput.length === 4) {
+        if (currentInput === captchaText) finalizeCaptcha(true);
+        else {
+          statusEl.textContent = "❌ Sai rồi! Captcha mới";
+          randomCaptcha();
+        }
+      } else {
+        statusEl.textContent = "⚠️ Cần đủ 4 ký tự trước khi nhấn Enter!";
+      }
+      return;
+    }
+
+    // Normal QWERTY keys -> Hangul map
+    if (koreanMap[key] && currentInput.length < 4) {
+      currentInput += koreanMap[key];
+      captchaInput.value = currentInput;
+    }
+  });
+}
