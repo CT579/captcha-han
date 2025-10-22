@@ -184,3 +184,36 @@ h1{font-size:24px;margin:6px 0 18px}
     width: 100%;
   }
 }
+
+/* Virtual keyboard */
+.keyboard {
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+.kb-row {
+  display: flex;
+  gap: 6px;
+}
+.keyboard button {
+  background: #f5f7ff;
+  border: 1px solid #dce3f9;
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  transition: all 0.1s ease;
+}
+.keyboard button:active {
+  background: var(--accent);
+  color: white;
+  transform: translateY(2px);
+}
+.keyboard button.wide {
+  min-width: 50px;
+}
+
