@@ -32,8 +32,18 @@ body{
 .top-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
 
 /* home */
-h1{font-size:24px;margin:6px 0 18px}
-.home-buttons{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
+h1 {
+  font-size: 24px;
+  margin: 6px 0 18px;
+  text-align: center; /* thêm dòng này để căn giữa chữ */
+}
+
+.home-buttons {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
 
 /* buttons */
 .btn{
@@ -217,3 +227,56 @@ h1{font-size:24px;margin:6px 0 18px}
   min-width: 50px;
 }
 
+/* guide grid */
+.guide-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 6px;
+  text-align: center;
+  margin: 10px 0;
+  font-weight: 600;
+  color: #0b1736;
+}
+
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 999;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(3px);
+}
+
+.modal-content {
+  background-color: #1f1f1f;
+  margin: 10% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 85%;
+  max-width: 500px;
+  border-radius: 10px;
+  color: #fff;
+  text-align: center;
+}
+
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.close:hover {
+  color: #fff;
+}
+
+.guide-img {
+  width: 100%;
+  border-radius: 8px;
+  margin-top: 10px;
+}
