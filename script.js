@@ -225,15 +225,17 @@ prevBtn.addEventListener('click', ()=>{
     if(quizSubmitted) renderFeedbackForIndex();
   }
 });
+
 nextBtn.addEventListener('click', ()=>{
   if(qIndex < quizData.length -1){
     qIndex++; renderQuizQuestion();
     if(quizSubmitted) renderFeedbackForIndex();
   } else {
-    // at last question -> show confirm to submit
-    openConfirm(false);
+    // 👉 Nếu chưa nộp thì hỏi xác nhận, còn nếu đã nộp thì không hỏi nữa
+    if(!quizSubmitted) openConfirm(false);
   }
 });
+
 
 // Submit flow
 submitQuizBtn.addEventListener('click', ()=>{
@@ -275,6 +277,9 @@ confirmYes.addEventListener("click", () => {
 function doSubmit() {
   clearInterval(quizTimer);
   quizSubmitted = true;
+  qIndex = 0;
+  renderQuizQuestion();
+
 
   // Tính điểm
   let correctCount = 0;
