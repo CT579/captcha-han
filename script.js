@@ -3,8 +3,9 @@ const koreanMap = {
   q:"ㅂ", w:"ㅈ", e:"ㄷ", r:"ㄱ", t:"ㅅ",
   y:"ㅛ", u:"ㅕ", i:"ㅑ", o:"ㅐ", p:"ㅔ",
   a:"ㅁ", s:"ㄴ", d:"ㅇ", f:"ㄹ", g:"ㅎ",
-  h:"ㅗ", j:"ㅓ", k:"ㅏ", l:"ㅣ",
-  z:"ㅋ", x:"ㅌ", c:"ㅊ", v:"ㅍ", b:"ㅠ", n:"ㅜ", m:"ㅡ"
+  h:"ㅗ", j:"ㅓ", k:"ㅏ", l:"ㅣ", m:"ㅡ",
+  z:"ㅋ", x:"ㅌ", c:"ㅊ", v:"ㅍ", b:"ㅠ", n:"ㅜ",
+
 };
 const koreanChars = Object.values(koreanMap);
 
@@ -113,34 +114,64 @@ function pickRandomCorrectKeyForChar(ch){
 }
 function shuffleArray(arr){ return arr.sort(()=>Math.random()-0.5); }
 
-function generateQuiz(){
+
+function generateQuiz() {
   quizData = [];
   const keys = Object.keys(koreanMap);
-  for(let i=0;i<15;i++){
-    const correctKey = keys[Math.floor(Math.random()*keys.length)]; // e.g. "k"
+  const shuffledKeys = [...keys];
+  shuffleArray(shuffledKeys);
+
+  for (let i = 0; i < 26; i++) {
+    const correctKey = shuffledKeys[i];
     const char = koreanMap[correctKey];
-    // prepare wrong options as keys (latin), pick 3 distinct wrongs
-    const wrongs = keys.filter(k=>k!==correctKey);
+    const wrongs = keys.filter(k => k !== correctKey);
     shuffleArray(wrongs);
-    const wrong3 = wrongs.slice(0,3);
-    const opts = [correctKey, ...wrong3].map(k=>k.toUpperCase()); // store uppercase letters as options
+    const wrong3 = wrongs.slice(0, 3);
+    const opts = [correctKey, ...wrong3].map(k => k.toUpperCase());
     shuffleArray(opts);
     quizData.push({ char, correct: correctKey.toUpperCase(), options: opts });
   }
-  userAnswers = Array(15).fill(null);
-  qIndex = 0; quizSubmitted = false;
-  quizTimeLeft = 120;
+
+  userAnswers = Array(26).fill(null);
+  qIndex = 0;
+  quizSubmitted = false;
+  quizTimeLeft = 360; // 👉 6 phút
+
   renderQuizQuestion();
   quizSummary.innerHTML = "";
   summaryTop.textContent = "";
+
   clearInterval(quizTimer);
-  quizTimer = setInterval(()=>{ quizTimeLeft--; quizTimerEl.textContent = quizTimeLeft; if(quizTimeLeft<=0){ clearInterval(quizTimer); openConfirm(true); } },1000);
+
+  // 👉 Hiển thị đúng 6:00 ngay lập tức
+  const initMinutes = Math.floor(quizTimeLeft / 60);
+  const initSeconds = quizTimeLeft % 60;
+  quizTimerEl.textContent = `${initMinutes}:${initSeconds.toString().padStart(2, "0")}`;
+
+  // 👉 Bắt đầu đếm sau 1 giây
+  quizTimer = setInterval(() => {
+    quizTimeLeft--;
+
+    if (quizTimeLeft < 0) {
+      clearInterval(quizTimer);
+      openConfirm(true);
+      return;
+    }
+
+    const minutes = Math.floor(quizTimeLeft / 60);
+    const seconds = quizTimeLeft % 60;
+    quizTimerEl.textContent = `${minutes}:${seconds.toString().padStart(2, "0")}`;
+  }, 1000);
 }
+
+
+
 
 function renderQuizQuestion(){
   const q = quizData[qIndex];
   quizQuestionEl.textContent = q.char;
-  currentQuestionEl.textContent = qIndex+1;
+  currentQuestionEl.textContent = `${qIndex + 1}/${quizData.length}`;
+
   // show A/B on top row, C/D bottom row displayed by grid
   quizOptionsEl.innerHTML = '';
   for(let i=0;i<4;i++){
@@ -173,11 +204,17 @@ function renderQuizQuestion(){
   void quizOptionsEl.offsetWidth;
 }
 
-function startQuiz(){
+function startQuiz() {
   showScreen(quizScreen);
   generateQuiz();
-  quizTimerEl.textContent = quizTimeLeft;
+
+  // ❌ XÓA hoặc ghi đè dòng cũ: quizTimerEl.textContent = quizTimeLeft;
+  // ✅ Thay bằng đoạn này để hiển thị ngay định dạng 6:00
+  const minutes = Math.floor(quizTimeLeft / 60);
+  const seconds = quizTimeLeft % 60;
+  quizTimerEl.textContent = `${minutes}:${seconds.toString().padStart(2, "0")}`;
 }
+
 quizBtn.addEventListener('click', startQuiz);
 quizExitBtn.addEventListener('click', ()=>{ clearInterval(quizTimer); showScreen(home); });
 
@@ -209,34 +246,52 @@ submitQuizBtn.addEventListener('click', ()=>{
   }
 });
 
-// modal confirm control
-function openConfirm(auto=false){
-  // auto true means auto-submit (no confirm UI) used when time out
-  if(auto){
+// -------------------- Modal confirm control --------------------
+function openConfirm(auto = false) {
+  if (auto) {
+    // tự động nộp bài khi hết giờ
     doSubmit();
     return;
   }
-  confirmText.textContent = "Bạn có chắc muốn nộp bài không?";
-  confirmModal.classList.remove('hidden');
-}
-confirmNo.addEventListener('click', ()=>{ confirmModal.classList.add('hidden'); });
-confirmYes.addEventListener('click', ()=>{ confirmModal.classList.add('hidden'); doSubmit(); });
 
-function doSubmit(){
+  // hiển thị modal xác nhận
+  confirmText.textContent = "📝 Bạn có chắc muốn nộp bài không?";
+  confirmModal.classList.remove("hidden");
+  confirmModal.style.display = "flex"; // đảm bảo hiện trên mọi trình duyệt
+  confirmModal.focus();
+}
+
+confirmNo.addEventListener("click", () => {
+  confirmModal.classList.add("hidden");
+  confirmModal.style.display = "none";
+});
+
+confirmYes.addEventListener("click", () => {
+  confirmModal.classList.add("hidden");
+  confirmModal.style.display = "none";
+  doSubmit(); // GỌI NỘP BÀI TẠI ĐÂY
+});
+
+function doSubmit() {
   clearInterval(quizTimer);
   quizSubmitted = true;
-  // calculate score
-  let correct = 0;
-  quizData.forEach((q,i)=>{
-    if(userAnswers[i] === q.correct) correct++;
+
+  // Tính điểm
+  let correctCount = 0;
+  quizData.forEach((q, i) => {
+    if (userAnswers[i] === q.correct) correctCount++;
   });
-  summaryTop.textContent = `Kết quả: ${correct}/${quizData.length} đúng`;
-  quizSummary.innerHTML = `<div class="muted">Bạn có thể dùng ⬅️ / ➡️ để xem lại từng câu.</div>`;
-  // set submit button to "Làm lại"
-  submitQuizBtn.textContent = '🔁 Làm lại';
-  // render current feedback
+
+  summaryTop.textContent = `✅ Kết quả: ${correctCount}/${quizData.length} đúng`;
+  quizSummary.innerHTML = `<div class="muted">Dùng ⬅️ / ➡️ để xem lại từng câu hoặc bấm 🔁 Làm lại để chơi lại.</div>`;
+
+  // Cập nhật nút nộp bài thành "Làm lại"
+  submitQuizBtn.textContent = "🔁 Làm lại";
+
+  // Hiển thị đánh dấu đúng/sai cho câu hiện tại
   renderFeedbackForIndex();
 }
+
 
 // render feedback for currently displayed index
 function renderFeedbackForIndex(){
@@ -345,6 +400,30 @@ if (guideBtn && guideModal && closeGuide) {
   window.addEventListener("click", (e) => {
     if (e.target === guideModal) {
       guideModal.style.display = "none";
+    }
+  });
+}
+
+
+// === Ảnh phóng to trong modal hướng dẫn ===
+const guideImage = document.querySelector(".hinh_ki_tu_captcha");
+const imgZoomModal = document.getElementById("imgZoomModal");
+const zoomedImg = document.getElementById("zoomedImg");
+const closeImgZoom = document.getElementById("closeImgZoom");
+
+if (guideImage && imgZoomModal && zoomedImg && closeImgZoom) {
+  guideImage.addEventListener("click", () => {
+    zoomedImg.src = guideImage.src;
+    imgZoomModal.style.display = "flex";
+  });
+
+  closeImgZoom.addEventListener("click", () => {
+    imgZoomModal.style.display = "none";
+  });
+
+  imgZoomModal.addEventListener("click", (e) => {
+    if (e.target === imgZoomModal) {
+      imgZoomModal.style.display = "none";
     }
   });
 }
